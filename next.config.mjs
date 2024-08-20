@@ -10,12 +10,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "nitelifenav.com",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "images.pexels.com",
         port: "",
         pathname: "/**",
@@ -27,11 +21,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverExternalPackages: [
-      "@libsql/client",
-      "@payloadcms/db-sqlite",
-      "libsql",
-    ],
+    serverExternalPackages: ["@payloadcms/db-sqlite"],
   },
 
   // eslint: { ignoreDuringBuilds: true },

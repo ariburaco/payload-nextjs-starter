@@ -21,7 +21,11 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverExternalPackages: ["@payloadcms/db-sqlite"],
+    serverExternalPackages: [
+      "@libsql/client",
+      "@payloadcms/db-sqlite",
+      "libsql",
+    ],
   },
 
   // eslint: { ignoreDuringBuilds: true },

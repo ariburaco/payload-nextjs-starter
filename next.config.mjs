@@ -26,7 +26,13 @@ const nextConfig = {
       },
     ],
   },
-  experimental: { serverComponentsExternalPackages: ["@libsql/client"] },
+  experimental: {
+    serverExternalPackages: [
+      "@libsql/client",
+      "@payloadcms/db-sqlite",
+      "libsql",
+    ],
+  },
 
   // eslint: { ignoreDuringBuilds: true },
   // typescript: { ignoreBuildErrors: true },

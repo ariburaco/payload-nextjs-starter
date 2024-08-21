@@ -1,51 +1,29 @@
 // storage-adapter-import-placeholder
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
+import { seoPlugin } from "@payloadcms/plugin-seo";
+import {
+  HTMLConverterFeature,
+  lexicalEditor,
+} from "@payloadcms/richtext-lexical";
 import { uploadthingStorage } from "@payloadcms/storage-uploadthing";
 import path from "path";
-import { buildConfig } from "payload";
+import { buildConfig, Payload } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
-import { seoPlugin } from "@payloadcms/plugin-seo";
-import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 
-import { Media } from "@/collections/Media";
-import { Users } from "@/collections/Users";
-
-import { en } from "payload/i18n/en";
-import { Nav } from "@/globals/Nav";
+import { Media } from "@/payload/collections/Media";
+import { Users } from "@/payload/collections/Users";
+import { Nav } from "@/payload/globals/Nav";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const IS_DEV = process.env.NODE_ENV === "development";
+
 export default buildConfig({
-  admin: {
-    autoLogin: {
-      email: "dev@payloadcms.com",
-      password: "test",
-      prefillOnly: true,
-    },
-  },
-  async onInit(payload) {
-    const existingUsers = await payload.find({
-      collection: "users",
-      limit: 1,
-    });
-
-    if (existingUsers.docs.length === 0) {
-      await payload.create({
-        collection: "users",
-        data: {
-          email: "dev@payloadcms.com",
-          password: "test",
-        },
-      });
-    }
-  },
-
   collections: [Users, Media],
   globals: [Nav],
-  editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
@@ -56,7 +34,24 @@ export default buildConfig({
       authToken: process.env.DATABASE_AUTH_TOKEN,
     },
   }),
-  sharp,
+  admin: {
+    autoLogin: IS_DEV
+      ? {
+          email: "dev@payloadcms.com",
+          password: "test",
+          prefillOnly: true,
+        }
+      : false,
+  },
+  async onInit(payload) {
+    await createDevUser(payload);
+  },
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      HTMLConverterFeature({}),
+    ],
+  }),
   plugins: [
     uploadthingStorage({
       collections: {
@@ -86,4 +81,26 @@ export default buildConfig({
       },
     },
   }),
+  sharp: sharp,
 });
+
+const createDevUser = async (payload: Payload) => {
+  try {
+    const existingUsers = await payload.find({
+      collection: "users",
+      limit: 1,
+    });
+
+    if (existingUsers?.docs?.length === 0) {
+      await payload.create({
+        collection: "users",
+        data: {
+          email: "dev@payloadcms.com",
+          password: "test",
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

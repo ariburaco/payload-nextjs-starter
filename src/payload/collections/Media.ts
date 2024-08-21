@@ -7,4 +7,11 @@ export const Media: CollectionConfig = {
   },
   fields: [],
   upload: true,
+  // hooks: {
+  //   afterChange: [
+  //     () => {
+  //       revalidatePath('/')
+  //     },
+  //   ],
+  // },
 };

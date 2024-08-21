@@ -1,8 +1,8 @@
 import Navbar from "@/components/common/navbar";
-import payloadSSR from "@/payload/client-ssr";
+import getPayload from "@/payload";
 
 export default async function Home() {
-  const payload = await payloadSSR();
+  const payload = await getPayload();
   const nav = await payload.findGlobal({
     slug: "nav",
   });

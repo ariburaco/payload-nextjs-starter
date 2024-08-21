@@ -1,30 +1,40 @@
 // storage-adapter-import-placeholder
+import { Media } from "@/payload/collections/Media";
+import { Pages } from "@/payload/collections/Pages";
+import { Users } from "@/payload/collections/Users";
+import { Nav } from "@/payload/globals/Nav";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
+import { seoPlugin } from "@payloadcms/plugin-seo";
+import {
+  HTMLConverterFeature,
+  lexicalEditor,
+} from "@payloadcms/richtext-lexical";
 import { uploadthingStorage } from "@payloadcms/storage-uploadthing";
 import path from "path";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
-import { seoPlugin } from "@payloadcms/plugin-seo";
-import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
-
-import { Media } from "@/collections/Media";
-import { Users } from "@/collections/Users";
-
-import { en } from "payload/i18n/en";
-import { Nav } from "@/globals/Nav";
+import {} from "@payloadcms/plugin-nested-docs";
+import { COLLECTION_SLUG_PAGE } from "@/payload/collections/config";
+import generateBreadcrumbsUrl from "@/payload/utils/generateBreadcrumbsUrl";
+import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs";
+import { SiteSettings } from "@/payload/globals/site-settings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const IS_DEV = process.env.NODE_ENV === "development";
+
 export default buildConfig({
   admin: {
-    autoLogin: {
-      email: "dev@payloadcms.com",
-      password: "test",
-      prefillOnly: true,
-    },
+    autoLogin: IS_DEV
+      ? {
+          email: "dev@payloadcms.com",
+          password: "test",
+          prefillOnly: true,
+        }
+      : false,
   },
   async onInit(payload) {
     const existingUsers = await payload.find({
@@ -43,9 +53,14 @@ export default buildConfig({
     }
   },
 
-  collections: [Users, Media],
-  globals: [Nav],
-  editor: lexicalEditor(),
+  collections: [Users, Media, Pages],
+  globals: [SiteSettings, Nav],
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      HTMLConverterFeature({}),
+    ],
+  }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
@@ -72,6 +87,11 @@ export default buildConfig({
       // uploadsCollection: "media",
       // generateTitle: ({ doc }) => `${doc.title} | Payload`,
       // generateDescription: ({ doc }) => doc.excerpt,
+    }),
+    nestedDocsPlugin({
+      collections: [COLLECTION_SLUG_PAGE],
+      generateURL: generateBreadcrumbsUrl,
+      breadcrumbsFieldSlug: "breadcrumbs",
     }),
   ],
   email: nodemailerAdapter({

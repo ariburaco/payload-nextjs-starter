@@ -5,8 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL ||
+  process.env.VERCEL_URL ||
+  "http://localhost:3000";
 
 export const assetUrl = (path: string) => {
-  return `${BASE_URL}/${path}`;
+  return `${BASE_URL}${path}`;
 };

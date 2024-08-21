@@ -1,7 +1,12 @@
 import { withPayload } from "@payloadcms/next/withPayload";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-const BASE_DOMAIN = BASE_URL.replace("http://", "").replace("https://", "");
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL ??
+  process.env.VERCEL_URL ??
+  "http://localhost:3000";
+const BASE_DOMAIN = BASE_URL.replace("http://", "")
+  .replace("https://", "")
+  .replace("www.", "");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

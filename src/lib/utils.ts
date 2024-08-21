@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.NEXT_PUBLIC_BASE_URL ||
   process.env.VERCEL_URL ||
   "http://localhost:3000";
 

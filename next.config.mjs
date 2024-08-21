@@ -1,5 +1,8 @@
 import { withPayload } from "@payloadcms/next/withPayload";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+const BASE_DOMAIN = BASE_URL.replace("http://", "").replace("https://", "");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -21,6 +24,14 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
+      },
+      {
+        protocol: "http",
+        hostname: BASE_DOMAIN,
+      },
+      {
+        protocol: "https",
+        hostname: BASE_DOMAIN,
       },
     ],
   },

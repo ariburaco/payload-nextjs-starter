@@ -7,7 +7,6 @@ export default async function Home() {
   const nav = await payload.findGlobal({
     slug: "nav",
   });
-  console.log("🚀 ~ Home ~ nav:", nav);
 
   return (
     <main className="container flex h-screen flex-col items-center justify-center gap-4">

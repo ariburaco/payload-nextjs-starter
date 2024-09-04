@@ -31,9 +31,9 @@ export default buildConfig({
   },
   db: sqliteAdapter({
     client: {
-      url: "file:./database/replica.db",
-      syncUrl: process.env.DATABASE_URL ?? "",
-      syncInterval: 10000,
+      // url: "file:./database/replica.db",
+      // syncInterval: 10000,
+      url: process.env.DATABASE_URL ?? "",
       authToken: process.env.DATABASE_AUTH_TOKEN,
     },
     push: false,

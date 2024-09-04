@@ -1,4 +1,5 @@
-import { GlobalConfig } from "payload";
+import { revalidatePath } from "next/cache";
+import { CollectionAfterChangeHook, GlobalConfig } from "payload";
 
 export const Nav: GlobalConfig = {
   slug: "nav",
@@ -30,4 +31,12 @@ export const Nav: GlobalConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [
+      (args) => {
+        console.log("🚀 ~ Nav ~ args:", args);
+        revalidatePath("/", "page");
+      },
+    ],
+  },
 };

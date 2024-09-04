@@ -34,8 +34,7 @@ export const Nav: GlobalConfig = {
   hooks: {
     afterChange: [
       (args) => {
-        console.log("🚀 ~ Nav ~ args:", args);
-        revalidatePath("/", "page");
+        revalidatePath("/", "layout");
       },
     ],
   },

@@ -15,6 +15,7 @@ import { fileURLToPath } from "url";
 import { Media } from "@/payload/collections/Media";
 import { Users } from "@/payload/collections/Users";
 import { Nav } from "@/payload/globals/Nav";
+import { migrations } from "database/migrations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -30,9 +31,14 @@ export default buildConfig({
   },
   db: sqliteAdapter({
     client: {
+      // url: "file:./database/replica.db",
       url: process.env.DATABASE_URL ?? "",
       authToken: process.env.DATABASE_AUTH_TOKEN,
     },
+    push: false,
+    logger: true,
+    migrationDir: "./database/migrations",
+    prodMigrations: migrations,
   }),
   admin: {
     autoLogin: IS_DEV

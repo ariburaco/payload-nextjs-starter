@@ -10,18 +10,23 @@ interface NavbarProps {
 
 const Navbar = ({ nav }: NavbarProps) => {
   if (!nav) return null;
-  console.log("🚀 ~ Navbar ~ nav:", nav);
 
   const logo = typeof nav.logo === "object" ? nav.logo : null;
   console.log("🚀 ~ Navbar ~ logo:", logo);
 
   const fullLogo = assetUrl(logo?.url || "");
-  console.log("🚀 ~ Navbar ~ fullLogo:", fullLogo);
+
+  const utUrl = `https://utfs.io/f/${logo?._key}`;
 
   return (
     <nav className="flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <Image src={fullLogo} alt="Logo" width={50} height={50} />
+        <Image
+          src={utUrl}
+          alt="Logo"
+          width={logo?.width || 50}
+          height={logo?.height || 50}
+        />
       </div>
     </nav>
   );

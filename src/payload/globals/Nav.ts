@@ -18,5 +18,16 @@ export const Nav: GlobalConfig = {
         update: () => true,
       },
     },
+    {
+      name: "cta",
+      label: "CTA",
+      type: "text",
+      required: true,
+      access: {
+        read: () => true,
+        create: () => true,
+        update: () => true,
+      },
+    },
   ],
 };

@@ -122,6 +122,7 @@ export interface PayloadMigration {
 export interface Nav {
   id: number;
   logo: number | Media;
+  cta: string;
   updatedAt?: string | null;
   createdAt?: string | null;
 }

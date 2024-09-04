@@ -4,6 +4,7 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL ??
   process.env.VERCEL_URL ??
   "http://localhost:3000";
+
 const BASE_DOMAIN = BASE_URL.replace("http://", "")
   .replace("https://", "")
   .replace("www.", "");
@@ -40,13 +41,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverExternalPackages: [
-      "@libsql/client",
-      "@payloadcms/db-sqlite",
-      "libsql",
-    ],
-  },
+  serverExternalPackages: ["@libsql/client", "@payloadcms/db-sqlite", "libsql"],
 
   // eslint: { ignoreDuringBuilds: true },
   // typescript: { ignoreBuildErrors: true },

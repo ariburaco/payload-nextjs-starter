@@ -1,12 +1,15 @@
 import Navbar from "@/components/common/navbar";
 import getPayload from "@/payload/payload.ssr";
 
+// export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const payload = await getPayload();
 
   const nav = await payload.findGlobal({
     slug: "nav",
   });
+  console.log("🚀 ~ Home ~ nav:", nav);
 
   return (
     <main className="container flex h-screen flex-col items-center justify-center gap-4">

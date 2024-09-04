@@ -9,7 +9,8 @@ interface NavbarProps {
 }
 
 const Navbar = ({ nav }: NavbarProps) => {
-  if (!nav) return null;
+  if (!nav || !nav?.id) return null;
+  console.log("🚀 ~ Navbar ~ nav:", nav);
 
   const logo = typeof nav.logo === "object" ? nav.logo : null;
   console.log("🚀 ~ Navbar ~ logo:", logo);
@@ -27,6 +28,7 @@ const Navbar = ({ nav }: NavbarProps) => {
           width={logo?.width || 50}
           height={logo?.height || 50}
         />
+        <span className="text-lg font-bold">{nav?.cta}</span>
       </div>
     </nav>
   );

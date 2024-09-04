@@ -31,12 +31,13 @@ export default buildConfig({
   },
   db: sqliteAdapter({
     client: {
-      // url: "file:./database/replica.db",
-      url: process.env.DATABASE_URL ?? "",
+      url: "file:./database/replica.db",
+      syncUrl: process.env.DATABASE_URL ?? "",
+      syncInterval: 10000,
       authToken: process.env.DATABASE_AUTH_TOKEN,
     },
     push: false,
-    logger: true,
+    logger: false,
     migrationDir: "./database/migrations",
     prodMigrations: migrations,
   }),
